@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/pills-ts/static/css/main.0555d10a.chunk.css",
+    "main.js": "/pills-ts/static/js/main.86523a5d.chunk.js",
+    "main.js.map": "/pills-ts/static/js/main.86523a5d.chunk.js.map",
+    "runtime-main.js": "/pills-ts/static/js/runtime-main.aa4ac5ba.js",
+    "runtime-main.js.map": "/pills-ts/static/js/runtime-main.aa4ac5ba.js.map",
+    "static/js/2.2031c70b.chunk.js": "/pills-ts/static/js/2.2031c70b.chunk.js",
+    "static/js/2.2031c70b.chunk.js.map": "/pills-ts/static/js/2.2031c70b.chunk.js.map",
+    "index.html": "/pills-ts/index.html",
+    "static/css/main.0555d10a.chunk.css.map": "/pills-ts/static/css/main.0555d10a.chunk.css.map",
+    "static/js/2.2031c70b.chunk.js.LICENSE.txt": "/pills-ts/static/js/2.2031c70b.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.aa4ac5ba.js",
+    "static/js/2.2031c70b.chunk.js",
+    "static/css/main.0555d10a.chunk.css",
+    "static/js/main.86523a5d.chunk.js"
+  ]
+}
