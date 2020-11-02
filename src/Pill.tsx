@@ -10,9 +10,9 @@ const Pill: React.FC<Props> = (props) => {
   const HEADING_CLASS: string = "headingMode";
   const [headingMode, setHeadingMode] = useState<boolean>(() => false);
 
-  function toggleHeading() {
-    setHeadingMode((prevMode) => !prevMode);
-  }
+  const toggleHeading = () => {
+    setHeadingMode((prevMode: boolean) => !prevMode);
+  };
 
   const className: string = `pill ${headingMode ? HEADING_CLASS : ""}`.trim();
   return (
