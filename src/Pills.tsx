@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Pill from "./Pill";
 
 interface Props {
@@ -9,46 +9,41 @@ interface PillObj {
   key: number;
   breakLine?: boolean;
 }
-interface DOMElement {
-  current: HTMLDivElement | null;
-}
+
+const borders = 2, //pill border size
+  margins = 10, //pill margins size
+  heading = 20; //heading size
+
+  const getPillSize = (child: Element) => {
+  const isHeadingMode = child.className.includes("headingMode"),
+    buffer = margins + borders + (!isHeadingMode ? heading : 0);
+  return child.scrollWidth + buffer;
+};
 
 const Pills: React.FC<Props> = (props) => {
-  const [width, setWidth] = useState<number>(() => 0),
-    [pills, setPills] = useState<PillObj[]>(() =>
-      props.terms.map((term: string, key: number) =>
-        Object.assign({ term, key })
-      )
+  const [pills, setPills] = useState<PillObj[]>(() =>
+      props.terms.map((term, key) => Object.assign({ term, key }))
     ),
     pillsRef = useRef<HTMLDivElement>(null);
 
   const updateComponent = () => {
-    const { current }: DOMElement = pillsRef;
+    const { current } = pillsRef;
     if (current) {
-      const { clientWidth }: { clientWidth: number } = current,
-        borders: number = 2, //pill border size
-        margins: number = 10, //pill margins size
-        heading: number = 20; //heading size
-      let currentLineSize: number = 0,
+      const { clientWidth }: { clientWidth: number } = current;
+      let currentLineSize = 0,
         breakLineIndexes: number[] = [];
 
-      Array.from(current.querySelectorAll(".pill")).forEach(
-        (child: globalThis.Element, i: number) => {
-          const isHeadingMode: boolean = child.className.includes(
-              "headingMode"
-            ),
-            buffer: number = margins + borders + (!isHeadingMode ? heading : 0),
-            pillSize: number = child.scrollWidth + buffer;
-          currentLineSize += pillSize;
+      Array.from(current.querySelectorAll(".pill")).forEach((child, i) => {
+        const pillSize = getPillSize(child);
+        currentLineSize += pillSize;
 
-          if (currentLineSize > clientWidth) {
-            currentLineSize = pillSize;
-            breakLineIndexes.push(i);
-          }
+        if (currentLineSize > clientWidth) {
+          currentLineSize = pillSize;
+          breakLineIndexes.push(i);
         }
-      );
-      setPills((prevState: PillObj[]) => {
-        return prevState.map((pill: PillObj) => {
+      });
+      setPills((prevState) => {
+        return prevState.map((pill) => {
           pill.breakLine = breakLineIndexes.includes(pill.key);
           return pill;
         });
@@ -56,19 +51,13 @@ const Pills: React.FC<Props> = (props) => {
     }
   };
 
-  const updateWidth = () => {
-    const { current }: DOMElement = pillsRef;
-    if (current) {
-      const { clientWidth }: { clientWidth: number } = current;
-      setWidth(clientWidth);
-    }
-  };
-
+  const updateComponentCallback = useCallback(updateComponent, []);
   useEffect(() => {
     updateComponent();
-    window.addEventListener("resize", updateWidth);
-    return () => window.removeEventListener("resize", updateWidth);
-  }, [width]);
+    window.addEventListener("resize", updateComponentCallback);
+    return () => window.removeEventListener("resize", updateComponentCallback);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div ref={pillsRef}>
